@@ -93,7 +93,7 @@
   }
 
   .dark {
-    --background: var(--primary-900);
+    --background: var(--black);
     --foreground: var(--primary-50);
 
     --card: var(--secondary-700);
