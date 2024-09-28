@@ -1,7 +1,7 @@
 import * as React from "react";
 import * as ToastPrimitives from "@radix-ui/react-toast";
 import { cva, type VariantProps } from "class-variance-authority";
-import { X } from "lucide-react";
+import { CheckCircleIcon, CircleXIcon, InfoIcon, TriangleAlert, TriangleAlertIcon, X } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
@@ -27,11 +27,11 @@ const toastVariants = cva(
   {
     variants: {
       variant: {
-        default: "border bg-background text-foreground",
-        success: "bg-background border-green-500 text-green-500",
-        warning: "bg-background border-yellow-500 text-yellow-500",
-        error: "bg-background border-red-500 text-red-500",
-        info: "bg-background border-blue-500 text-blue-500",
+        default: "border bg-card text-foreground",
+        success: "bg-card border-green-500 text-green-500",
+        warning: "bg-card border-yellow-500 text-yellow-500",
+        error: "bg-card border-red-500 text-red-500",
+        info: "bg-card border-blue-500 text-blue-500",
         destructive:
           "destructive group border-destructive bg-destructive text-destructive-foreground",
       },
@@ -45,7 +45,7 @@ const toastVariants = cva(
 const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Root> &
-    VariantProps<typeof toastVariants>
+  VariantProps<typeof toastVariants>
 >(({ className, variant, ...props }, ref) => {
   return (
     <ToastPrimitives.Root
@@ -92,14 +92,38 @@ ToastClose.displayName = ToastPrimitives.Close.displayName;
 
 const ToastTitle = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Title>,
-  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Title>
->(({ className, ...props }, ref) => (
-  <ToastPrimitives.Title
-    ref={ref}
-    className={cn("text-sm font-semibold", className)}
-    {...props}
-  />
-));
+  React.ComponentPropsWithoutRef<typeof ToastPrimitives.Title> & { variant?: "default" | "success" | "warning" | "error" | "info" | "destructive" | null }
+>(({ className, variant, ...props }, ref) => {
+  let variantIcon;
+
+  switch (variant) {
+    case "success":
+      variantIcon = <CheckCircleIcon className="w-5 h-5 text-green-500" />;
+      break;
+    case "warning":
+      variantIcon = <TriangleAlertIcon className="w-5 h-5 text-yellow-500" />;
+      break;
+    case "error":
+      variantIcon = <CircleXIcon className="w-5 h-5 text-red-500" />;
+      break;
+    case "info":
+      variantIcon = <InfoIcon className="w-5 h-5 text-blue-500" />;
+      break;
+    default:
+      //default icon
+      variantIcon =  <InfoIcon className="w-5 h-5 text-card-foreground" />;
+  }
+  return (
+    <div className="flex items-center space-x-2">
+      {variantIcon}
+      <ToastPrimitives.Title
+        ref={ref}
+        className={cn("text-sm font-semibold", className)}
+        {...props}
+      />
+    </div>
+  );
+});
 ToastTitle.displayName = ToastPrimitives.Title.displayName;
 
 const ToastDescription = React.forwardRef<
