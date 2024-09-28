@@ -7,7 +7,6 @@ import "@/styles/globals.css";
 
 import StoreProvider from '@/redux/store-provider';
 import AlertDialogModal from '@/components/interactive/AlertDialog';
-import Navbar from "@/components/nav/navbar";
 
 const kanit = Kanit({
   subsets: ["latin", "thai"],
@@ -55,8 +54,7 @@ export default function RootLayout({
             <AlertDialogModal />
             <Toaster />
 
-            <header className="p-6">
-              <Navbar />
+            <header>
             </header>
 
 
